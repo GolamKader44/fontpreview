@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Font Preview</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    @font-face {
+      font-family: 'NooreHuda';
+      src: url('noorehuda.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'NooreHidayat';
+      src: url('noorehidayat.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'NooreHira';
+      src: url('noorehira.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'NooreHudaRegular';
+      src: url('noorehuda-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'NooreHidayatRegular';
+      src: url('noorehidayat-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'NooreHiraRegular';
+      src: url('noorehira-regular.ttf') format('truetype');
+    }
+
+    :root {
+      --bg: #f0f4f9;
+      --accent: #1e90ff;
+      --text: #222;
+      --card-bg: #fff;
+      --shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      padding: 30px 20px;
+      color: var(--text);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 1100px;
+      display: block;
+      margin: 0 auto 20px;
+      padding: 15px;
+      font-size: 18px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      resize: vertical;
+      box-shadow: var(--shadow);
+      background: #fff;
+    }
+
+    .controls {
+      max-width: 1100px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .controls label {
+      font-weight: bold;
+    }
+
+    select,
+    button {
+      font-size: 16px;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .split-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .column {
+      flex: 1 1 48%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .font-preview {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+      position: relative;
+    }
+
+    .font-preview:hover {
+      transform: scale(1.01);
+    }
+
+    .font-label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+
+    .preview-text {
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .button-row {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .button-row button {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .font1 {
+      font-family: 'NooreHuda';
+    }
+
+    .font2 {
+      font-family: 'NooreHidayat';
+    }
+
+    .font3 {
+      font-family: 'NooreHira';
+    }
+
+    .font4 {
+      font-family: 'NooreHudaRegular';
+    }
+
+    .font5 {
+      font-family: 'NooreHidayatRegular';
+    }
+
+    .font6 {
+      font-family: 'NooreHiraRegular';
+    }
+
+    @media (max-width: 768px) {
+      .split-container {
+        flex-direction: column;
+      }
+
+      .column {
+        flex: 1 1 100%;
+      }
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>📝Font Style Tester</h1>
+
+  <textarea id="textInput">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</textarea>
+
+  <div class="controls">
+    <div>
+      <label>Font Size: </label>
+      <select id="fontSize">
+        <option value="24">24px</option>
+        <option value="28" selected>28px</option>
+        <option value="32">32px</option>
+        <option value="36">36px</option>
+        <option value="40">40px</option>
+      </select>
+    </div>
+    <div>
+      <label>Direction: </label>
+      <select id="textDirection">
+        <option value="rtl" selected>RTL</option>
+        <option value="ltr">LTR</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="split-container">
+    <div class="column">
+      <div class="font-preview font1">
+        <div class="font-label">Font 1: noorehuda.ttf</div>
+        <div class="preview-text" id="preview1"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview1')">📋 Copy</button>
+          <button onclick="downloadPNG('preview1')">📷 PNG</button>
+        </div>
+      </div>
+      <div class="font-preview font2">
+        <div class="font-label">Font 2: noorehidayat.ttf</div>
+        <div class="preview-text" id="preview2"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview2')">📋 Copy</button>
+          <button onclick="downloadPNG('preview2')">📷 PNG</button>
+        </div>
+      </div>
+      <div class="font-preview font3">
+        <div class="font-label">Font 3: noorehira.ttf</div>
+        <div class="preview-text" id="preview3"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview3')">📋 Copy</button>
+          <button onclick="downloadPNG('preview3')">📷 PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+      <div class="font-preview font4">
+        <div class="font-label">Font 4: noorehuda-regular.ttf</div>
+        <div class="preview-text" id="preview4"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview4')">📋 Copy</button>
+          <button onclick="downloadPNG('preview4')">📷 PNG</button>
+        </div>
+      </div>
+      <div class="font-preview font5">
+        <div class="font-label">Font 5: noorehidayat-regular.ttf</div>
+        <div class="preview-text" id="preview5"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview5')">📋 Copy</button>
+          <button onclick="downloadPNG('preview5')">📷 PNG</button>
+        </div>
+      </div>
+      <div class="font-preview font6">
+        <div class="font-label">Font 6: noorehira-regular.ttf</div>
+        <div class="preview-text" id="preview6"></div>
+        <div class="button-row">
+          <button onclick="copyText('preview6')">📋 Copy</button>
+          <button onclick="downloadPNG('preview6')">📷 PNG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">📁 Place all font files and this HTML in the same folder. Open directly in browser. Offline
+    supported.</div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const previews = ['preview1', 'preview2', 'preview3', 'preview4', 'preview5', 'preview6'].map(id => document.getElementById(id));
+    const fontSizeSelector = document.getElementById('fontSize');
+    const directionSelector = document.getElementById('textDirection');
+
+    function updatePreview() {
+      const value = textInput.value;
+      const fontSize = fontSizeSelector.value + 'px';
+      const dir = directionSelector.value;
+
+      previews.forEach(preview => {
+        preview.textContent = value;
+        preview.style.fontSize = fontSize;
+        preview.dir = dir;
+      });
+    }
+
+    function copyText(id) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Text copied!');
+      });
+    }
+
+    function downloadPNG(id) {
+      const node = document.getElementById(id).parentElement;
+      html2canvas(node).then(canvas => {
+        const link = document.createElement('a');
+        link.download = id + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    textInput.addEventListener('input', updatePreview);
+    fontSizeSelector.addEventListener('change', updatePreview);
+    directionSelector.addEventListener('change', updatePreview);
+    updatePreview(); // Init
+  </script>
+</body>
+
+</html>
